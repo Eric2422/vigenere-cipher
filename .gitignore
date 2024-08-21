@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+bin/
+
+.vscode
+
+ciphertext/*
+!ciphertext/sample.txt
+keys/*
+!keys/sample.txt
+plaintext/*
+!plaintext/sample.txt
