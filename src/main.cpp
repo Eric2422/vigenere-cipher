@@ -1,29 +1,22 @@
-#include <iostream>
+#include <cstring>
+#include <filesystem>
 #include <fstream>
-using namespace std;
+#include <iostream>
 
-string readFile(string filePath)
+int main(int, char *[])
 {
-    ifstream inputFile(filePath);
+    if (__argc < 2)
+    {
+        throw std::invalid_argument("Please pass in a file name.");
+    }
 
-    string fileString;
-    while (getline(inputFile, fileString))
-    inputFile.close();
 
-    return fileString;
-}
 
-int main()
-{
-    string plaintext = readFile("./plaintext/sample.txt");
-    std::cout << "Plaintext:\n" << plaintext << "\n\n";
+    std::ifstream plaintextFile(std::strcat("./plaintext/", __argv[1]));
+    std::ifstream keyFile(std::strcat("./keys/", __argv[1]));
+    std::ifstream ciphertextFile(std::strcat("./ciphter/", __argv[1]));
 
-    string key = readFile("./keys/sample.txt");
-    std::cout << "Key:\n" << key;
+    std::cout << std::filesystem::file_size(std::strcat("./plaintext/", __argv[1]));
 
-    string ciphertext = plaintext;
-    ofstream outputFile("./ciphertext/sample.txt");
-    outputFile << ciphertext;
-
-    return 0;
+    return EXIT_SUCCESS;
 }
