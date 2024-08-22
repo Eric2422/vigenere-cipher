@@ -32,8 +32,11 @@
 *.app
 bin/
 
+# Environment
 .vscode
+.bashrc
 
+# Input/ouput files
 ciphertext/*
 !ciphertext/sample.txt
 keys/*
