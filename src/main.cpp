@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 
-int main(int __argc, char *__argv[])
+int main(int, char *[])
 {
-    // Raise an error if the user did pass the necessary arguments.
+    // Raise an error if the user did not pass the necessary arguments.
     if (__argc < 2)
     {
         throw std::invalid_argument("Please pass in a file name.");
@@ -18,28 +18,43 @@ int main(int __argc, char *__argv[])
     int keySize = std::filesystem::file_size("./keys/" + fileName);
     if (plaintextSize != keySize)
     {
-        throw std::logic_error("The plaintext and key must be of the same length.");
+        throw std::invalid_argument("The plaintext and key must be of the same length.");
     }
 
     std::ifstream plaintextFile("./plaintext/" + fileName);
     std::ifstream keyFile("./keys/" + fileName);
     std::ofstream ciphertextFile("./ciphertext/" + fileName);
 
-    // Read each plaintextletter, encrypt with the key, and write it to ciphertext
+    std::string plaintext;
+    std::string key;
+    std::string ciphertext;
+
+    // Read each plaintext letter, encrypt it with the key, and write it to ciphertext
     for (int i = 0; i < plaintextSize; i++)
     {
         char plaintextChar = plaintextFile.get();
+        plaintext += plaintextChar;
+
         char keyChar = keyFile.get();
+        key += keyChar;        
 
-        int encryptedAscii = (int)plaintextChar + (int)keyChar % std::numeric_limits<char>::max();
-        std::cout << encryptedAscii << ' ';
-
-        ciphertextFile << (char)(encryptedAscii);
+        // Apply Vigenère's cipher.
+        // Subtract 32 from the modulus to account for non-printable ASCII characters,
+        // and add 32 to the result to prevent non-printable ASCII characters.
+        char ciphertextChar = (char)(((int)plaintextChar + (int)keyChar) % (std::numeric_limits<char>::max() - 32) + 32);
+        ciphertext += ciphertextChar;
     }
+    ciphertextFile << ciphertext;
 
     plaintextFile.close();
     keyFile.close();
     ciphertextFile.close();
+
+    // Print results
+    std::cout << "Successfully encrypted." << "\n\n";
+    std::cout << "Plaintext: " << plaintext << '\n';
+    std::cout << "Key: " << key << '\n';
+    std::cout << "Ciphertext: " << ciphertext;
 
     return EXIT_SUCCESS;
 }
