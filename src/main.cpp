@@ -41,15 +41,15 @@ char decryptChar(char ciphertext, char key)
     return (char)(((int)ciphertext - (int)key) % (std::numeric_limits<char>::max() - 32) - 32);
 }
 
-int main(int, char *[])
+int main(int argc, char *argv[])
 {
     // Raise an error if the user did not pass the necessary arguments.
-    if (__argc < 3)
+    if (argc < 3)
     {
         throw std::invalid_argument("Please pass in an operation(\"encrypt\" or \"decrypt\") and file name.");
     }
 
-    std::string fileName = (std::string)__argv[2];
+    std::string fileName = (std::string)argv[2];
 
     // Raise an error if the plaintext and key differ in length.
     int plaintextSize = std::filesystem::file_size("./plaintext/" + fileName);
