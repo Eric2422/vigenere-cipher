@@ -4,41 +4,20 @@
 #include <iostream>
 
 /**
- * @brief Encrypt a single character using Vigenère's cipher and a character as the key.
- *
- * Uses 7-bit ASCII values to encrypt the character.
- * Avoids producing a ASCII control character.
- *
- * @param plaintext A single character to use as the plaintext.
- * @param key A single character to use as the key.
- * @return char A ciphertext character produced using the key and plaintext.
- *         Will not be a control character.
+ * @brief Read all the content of a text file. 
+ * 
+ * @param filePath The filepath of the text file to read. 
+ * @return std::string The text contained in the file. 
  */
-char encryptChar(char plaintext, char key)
+std::string readFile(std::string filePath)
 {
-    // Apply Vigenère's cipher.
-    // Subtract 32 from the modulus to account for non-printable ASCII characters,
-    // and add 32 to the result to prevent non-printable ASCII characters.
-    return (char)(((int)plaintext + (int)key) % (std::numeric_limits<char>::max() - 32) + 32);
-}
+    std::ifstream inputFile(filePath);
 
-/**
- * @brief Decrypt a single character using Vigenère's cipher and a character as the key.
- *
- * Uses 7-bit ASCII values to decrypt the character.
- * Avoids producing a ASCII control character.
- *
- * @param ciphertext A single character to use as the ciphertext.
- * @param key A single character to use as the key.
- * @return char A plaintext character produced using the key and plaintext.
- *         Will not be a control character.
- */
-char decryptChar(char ciphertext, char key)
-{
-    // Undo Vigenère's cipher.
-    // Subtract 32 from the modulus to account for non-printable ASCII characters,
-    // and subtract 32 from the result to prevent non-printable ASCII characters.
-    return (char)(((int)ciphertext - (int)key) % (std::numeric_limits<char>::max() - 32) - 32);
+    std::string fileString;
+    while (getline(inputFile, fileString))
+    inputFile.close();
+
+    return fileString;
 }
 
 int main(int argc, char *argv[])

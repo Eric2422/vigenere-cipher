@@ -34,7 +34,7 @@ public:
      *
      * @param plaintext A string to use as the plaintext.
      * @exception `plaintext` and `self->key` strings differ in length.
-     * @return A ciphertext string produced using the plaintext and key.
+     * @return std::string A ciphertext string produced using the plaintext and key.
      *         Will not be a control character.
      */
     std::string encrypt(std::string plaintext)
@@ -67,7 +67,7 @@ public:
      *
      * @param ciphertext A string to use as the ciphertext.
      * @exception `plaintext` and `self->key` strings differ in length.
-     * @return A plaintext string produced using the key ciphertext and key.
+     * @return std::string A plaintext string produced using the key ciphertext and key.
      *         Will not be a control character.
      */
     std::string decrypt(std::string ciphertext)
