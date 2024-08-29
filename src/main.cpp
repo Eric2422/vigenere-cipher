@@ -32,38 +32,11 @@ int main(int argc, char *argv[])
 
     std::string fileName = (std::string)argv[2];
 
-
-    std::ifstream plaintextFile("./plaintext/" + fileName);
-    std::ifstream keyFile("./keys/" + fileName);
-    std::ofstream ciphertextFile("./ciphertext/" + fileName);
-
-
-    std::string plaintext;
+    std::string plaintext = readFile("./plaintext/" + fileName);
     std::string key = readFile("./keys/" + fileName);
-    std::string ciphertext;
-
     VigenereCipher cipher(key);
 
-    // Read each plaintext letter, encrypt it with the key, and write it to ciphertext
-    for (int i = 0; i < plaintextSize; i++)
-    {
-        char plaintextChar = plaintextFile.get();
-        plaintext += plaintextChar;
-
-        char keyChar = keyFile.get();
-        key += keyChar;
-
-        // Apply Vigenère's cipher.
-        // Subtract 32 from the modulus to account for non-printable ASCII characters,
-        // and add 32 to the result to prevent non-printable ASCII characters.
-        char ciphertextChar = encryptChar(plaintextChar, keyChar);
-        ciphertext += ciphertextChar;
-    }
-    ciphertextFile << ciphertext;
-
-    plaintextFile.close();
-    keyFile.close();
-    ciphertextFile.close();
+    std::string ciphertext = cipher.encrypt(plaintext);
 
     // Print results
     std::cout << "Successfully encrypted." << "\n\n";
