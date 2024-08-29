@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "cipher.h"
+
 /**
  * @brief Read all the content of a text file. 
  * 
@@ -30,21 +32,17 @@ int main(int argc, char *argv[])
 
     std::string fileName = (std::string)argv[2];
 
-    // Raise an error if the plaintext and key differ in length.
-    int plaintextSize = std::filesystem::file_size("./plaintext/" + fileName);
-    int keySize = std::filesystem::file_size("./keys/" + fileName);
-    if (plaintextSize != keySize)
-    {
-        throw std::invalid_argument("The input and key must be of the same length.");
-    }
 
     std::ifstream plaintextFile("./plaintext/" + fileName);
     std::ifstream keyFile("./keys/" + fileName);
     std::ofstream ciphertextFile("./ciphertext/" + fileName);
 
+
     std::string plaintext;
-    std::string key;
+    std::string key = readFile("./keys/" + fileName);
     std::string ciphertext;
+
+    VigenereCipher cipher(key);
 
     // Read each plaintext letter, encrypt it with the key, and write it to ciphertext
     for (int i = 0; i < plaintextSize; i++)
