@@ -29,14 +29,20 @@ int main(int argc, char *argv[])
     {
         throw std::invalid_argument("Please pass in an operation(\"encrypt\" or \"decrypt\") and file name.");
     }
-
+    
     std::string fileName = (std::string)argv[2];
-
-    std::string plaintext = readFile("./plaintext/" + fileName);
     std::string key = readFile("./keys/" + fileName);
     VigenereCipher cipher(key);
 
+    if ((std::string)argv[1] == "encrypt") {
+        std::cout << "Hello world!";
+    }
+
+    std::string plaintext = readFile("./plaintext/" + fileName);
+
     std::string ciphertext = cipher.encrypt(plaintext);
+    std::ofstream ciphertextFile("./ciphertext/" + fileName);
+    ciphertextFile << ciphertext;
 
     // Print results
     std::cout << "Successfully encrypted." << "\n\n";
