@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
         std::cout << "Plaintext: " << plaintext << '\n';
         std::cout << "Key: " << key << '\n';
         std::cout << "Ciphertext: " << ciphertext << '\n';
+        // std::cout << cipher.decrypt(ciphertext) << '\n';
     }
 
     else if ((std::string)argv[1] == "decrypt")
