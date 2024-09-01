@@ -7,49 +7,51 @@ VigenereCipher::VigenereCipher(std::string key)
 
 bool VigenereCipher::isValidInput(std::string inputString)
 {
+    std::cout << "Input string size: " << sizeof(inputString) << '\n';
+    std::cout << "Key size: " << sizeof(key) << '\n';
+
     return sizeof(inputString) == sizeof(this->key);
 }
 
 std::string VigenereCipher::encrypt(std::string plaintext)
 {
-    if (!isValidInput(plaintext))
-    {
-        throw std::invalid_argument("The input and key must be of the same length.");
-    }
-
-    std::string ciphertext;
-    for (int i = 0; i < sizeof(plaintext); i++)
-    {
-        int plaintextAscii = (int)plaintext[i];
-        int keyAscii = (int)this->key[i];
-
-        // Apply Vigenère's cipher.
-        // Subtract 32 from the modulus to account for non-printable ASCII characters,
-        // and add 32 to the result to prevent non-printable ASCII characters.
-        ciphertext += (char)((plaintextAscii + keyAscii) % (std::numeric_limits<char>::max() - 32) + 32);
-    }
-
-    return ciphertext;
+    return convertString(plaintext, 1);
 }
 
 std::string VigenereCipher::decrypt(std::string ciphertext)
 {
-    if (!isValidInput(ciphertext))
+    return convertString(ciphertext, -1);
+}
+
+std::string VigenereCipher::convertString(std::string input, int shift)
+{
+    if (!isValidInput(input))
     {
         throw std::invalid_argument("The input and key must be of the same length.");
     }
 
-    std::string plaintext;
-    for (int i = 0; i < sizeof(ciphertext); i++)
+    // Loop through each character in the input
+    std::string output = "";
+    for (int i = 0; i < sizeof(input); i++)
     {
-        int ciphertextAscii = (int)ciphertext[i];
-        int keyAscii = (int)this->key[i];
+        int inputAscii = (int)input[i];
 
-        // Undo Vigenère's cipher.
-        // Subtract 32 from the modulus to account for non-printable ASCII characters,
-        // and subtract 32 from the result to prevent non-printable ASCII characters.
-        plaintext += (char)(((int)ciphertextAscii - (int)keyAscii) % (std::numeric_limits<char>::max() - 32) - 32);
+        // If the char is a newline(10) or carriage return(13), skip.
+        if (inputAscii == 10 || inputAscii == 13)
+        {
+            output += inputAscii;
+            continue;
+        }
+
+        // Apply the shift to the key
+        int keyAscii = (int)this->key[i] * shift;
+
+        // The number of non-control ASCII characters
+        int modulus = (std::numeric_limits<char>::max() - 32);
+
+        // Apply Vigenère's cipher, but prevent unprintable characters
+        output += (char)((inputAscii + keyAscii) % modulus + (32 * shift));
     }
 
-    return plaintext;
+    return output;
 }
