@@ -35,6 +35,7 @@ bin/
 # Environment
 .vscode
 .bashrc
+.zshrc
 
 # Input/ouput files
 ciphertext/*

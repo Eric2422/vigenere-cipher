@@ -49,10 +49,10 @@ string VigenereCipher::convertString(string input, int shift)
         // cout << "Key: " << key[i] << "(" << keyAscii << ")\n";
 
         // The number of non-control ASCII characters
-        int modulus = (numeric_limits<char>::max() - 32);
+        int modulus = numeric_limits<char>::max();
 
         // Apply Vigenère's cipher, but prevent unprintable characters
-        int outputAscii = (inputAscii + keyAscii) % modulus + (32 * shift);
+        int outputAscii = (inputAscii + keyAscii) % numeric_limits<char>::max();
         // cout << "Output: " << char(outputAscii) << "(" << outputAscii << ")\n\n";
 
         output += char(outputAscii);
