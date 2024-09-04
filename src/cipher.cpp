@@ -53,7 +53,11 @@ string VigenereCipher::convertString(string input, int shift)
 
         // Apply Vigenère's cipher, but prevent unprintable characters
         int outputAscii = (inputAscii + keyAscii) % numeric_limits<char>::max();
-        // cout << "Output: " << char(outputAscii) << "(" << outputAscii << ")\n\n";
+
+        if (outputAscii < 0)
+        {
+            outputAscii = numeric_limits<char>::max() + outputAscii;
+        }
 
         output += char(outputAscii);
     }
