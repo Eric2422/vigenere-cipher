@@ -41,24 +41,18 @@ int main(int argc, char *argv[])
     string ciphertextFilePath = "./ciphertext/" + fileName;
 
     // Create a cipher out of the key
-    // string key = readFile("./keys/" + fileName);
-    // VigenereCipher cipher(key);
-
-    char key = 10;
-
-    // The number of non-control ASCII characters
-    int modulus = (numeric_limits<char>::max());
-    cout << "Modulus: " << modulus << "\n\n";
+    string key = readFile("./keys/" + fileName);
+    VigenereCipher cipher("A");
+    cout << "Key: " << int(key[0]) << "\n\n";
 
     for (int i=33; i<(numeric_limits<char>::max()); i++) {
-        // Apply Vigenère's cipher, but prevent unprintable characters
-        char ciphertext = (i + key) % modulus;
+        string ciphertext = cipher.encrypt(string(1, char(i)));
 
-        cout << char(i) << " (" << i << ')' << " -> ";
-        cout << ciphertext << " (" << int(ciphertext) << ')' << " -> ";
+        cout << char(i) << '(' << i << ')' << " -> ";
+        cout << cipher.encrypt(string(1, char(i))) << '(' << int(ciphertext[0]) << ')' << "\n";
 
-        char decrypted = (ciphertext - key) % modulus;
-        cout << decrypted << " (" << int(decrypted) << ')' << '\n';
+        // string decrypted = cipher.decrypt(ciphertext);
+        // cout << decrypted << '(' << int(decrypted[0]) << ')' << '\n';
     }
 
     // if ((string)argv[1] == "encrypt")

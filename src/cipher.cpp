@@ -20,7 +20,7 @@ string VigenereCipher::decrypt(string ciphertext)
     return convertString(ciphertext, -1);
 }
 
-string VigenereCipher::convertString(string input, int shift)
+string VigenereCipher::convertString(string input, int shiftDirection)
 {
     if (!isValidInput(input))
     {
@@ -44,20 +44,21 @@ string VigenereCipher::convertString(string input, int shift)
             continue;
         }
 
-        // Apply the shift to the key
-        int keyAscii = int(this->key[i]) * shift;
+        // Apply the shiftDirection to the key
+        int keyAscii = int(this->key[i]) * shiftDirection;
         // cout << "Key: " << key[i] << "(" << keyAscii << ")\n";
 
         // The number of non-control ASCII characters
         int modulus = numeric_limits<char>::max();
 
         // Apply Vigenère's cipher, but prevent unprintable characters
-        int outputAscii = (inputAscii + keyAscii) % numeric_limits<char>::max();
+        int outputAscii = (inputAscii + keyAscii) % modulus + 33;
+        // cout << ' ' << outputAscii << ' ';
 
-        if (outputAscii < 0)
-        {
-            outputAscii = numeric_limits<char>::max() + outputAscii;
-        }
+        // if (outputAscii < 0)
+        // {   
+        //     outputAscii = modulus + outputAscii;
+        // }
 
         output += char(outputAscii);
     }
