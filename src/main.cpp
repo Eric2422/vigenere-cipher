@@ -40,20 +40,46 @@ int main(int argc, char *argv[])
     string plaintextFilePath = "./plaintext/" + fileName;
     string ciphertextFilePath = "./ciphertext/" + fileName;
 
-    // Create a cipher out of the key
-    string key = readFile("./keys/" + fileName);
-    VigenereCipher cipher("A");
-    cout << "Key: " << int(key[0]) << "\n\n";
-
-    for (int i=33; i<(numeric_limits<char>::max()); i++) {
-        string ciphertext = cipher.encrypt(string(1, char(i)));
-
-        cout << char(i) << '(' << i << ')' << " -> ";
-        cout << cipher.encrypt(string(1, char(i))) << '(' << int(ciphertext[0]) << ')' << "\n";
-
-        // string decrypted = cipher.decrypt(ciphertext);
-        // cout << decrypted << '(' << int(decrypted[0]) << ')' << '\n';
+    string caesar;
+    for (int i = 65; i < 91; i++)
+    {
+        caesar += char(i);
     }
+    cout << caesar << "\n\n";
+
+    string plaintext = "Hello world!";
+    string ciphertext;
+    int key = 20;
+
+    for (char letter : plaintext)
+    {
+        cout << int(letter + key) << ' ';
+        ciphertext += char(letter + key);
+    }
+    cout << '\n' << ciphertext << "\n\n";
+
+    string decrypted;
+    for (char letter : ciphertext)
+    {   
+        cout << int(letter - key) << ' ';
+        decrypted += (letter - key);
+    }
+    cout << '\n' + decrypted;
+
+    // Create a cipher out of the key
+    // string key = readFile("./keys/" + fileName);
+    // VigenereCipher cipher("A");
+    // cout << "Key: " << int(key[0]) << "\n\n";
+
+    // for (int i=33; i<(numeric_limits<char>::max()); i++) {
+    //     string ciphertext = cipher.encrypt(string(1, char(i)));
+
+    //     cout << char(i) << '(' << i << ')' << " -> ";
+    //     cout << cipher.encrypt(string(1, char(i))) << '(' << int(ciphertext[0]) << ')' << " -> ";
+
+    //     string decrypted = cipher.decrypt(ciphertext);
+    //     cout << decrypted << '(' << int(decrypted[0]) << ')' << '\n';
+    // }
 
     // if ((string)argv[1] == "encrypt")
     // {

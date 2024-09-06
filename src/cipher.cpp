@@ -37,7 +37,7 @@ string VigenereCipher::convertString(string input, int shiftDirection)
         int inputAscii = int(input[i]);
         // cout << "Input: " << input[i] << "(" << inputAscii << ")\n";
 
-        // If the char is a newline(10) or carriage return(13), skip.
+        // If the char is one of the printable characters()
         if (inputAscii == 10 || inputAscii == 13)
         {
             output += inputAscii;
@@ -49,10 +49,10 @@ string VigenereCipher::convertString(string input, int shiftDirection)
         // cout << "Key: " << key[i] << "(" << keyAscii << ")\n";
 
         // The number of non-control ASCII characters
-        int modulus = numeric_limits<char>::max();
+        int modulus = numeric_limits<char>::max() - 32;
 
         // Apply Vigenère's cipher, but prevent unprintable characters
-        int outputAscii = (inputAscii + keyAscii) % modulus + 33;
+        int outputAscii = (inputAscii - 32 + keyAscii) % modulus + 32;
         // cout << ' ' << outputAscii << ' ';
 
         // if (outputAscii < 0)
