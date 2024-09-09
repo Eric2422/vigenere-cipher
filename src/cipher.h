@@ -5,6 +5,11 @@ using namespace std;
 class VigenereCipher
 {
 public:
+    /**
+     * @brief Construct a new Vigenere Cipher object.
+     * 
+     * @param key The string that serves as the key of the Vigenère cipher.
+     */
     VigenereCipher(string key);
 
     /**
@@ -50,6 +55,15 @@ public:
 
 private:
     string key;
+
+    /**
+     * @brief A modulo operation that does not return a negative value.
+     * 
+     * @param a The dividend of the operation.
+     * @param b The modulus of the operation.
+     * @return int The remainder resulting from the modulo operation.
+     */
+    static int nonNegativeMod(int a, int b);
 
     /**
      * @brief A private function to use for both encryption and decryption

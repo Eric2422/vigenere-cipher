@@ -20,6 +20,12 @@ string VigenereCipher::decrypt(string ciphertext)
     return convertString(ciphertext, -1);
 }
 
+int VigenereCipher::nonNegativeMod(int a, int b)
+{
+    int remainder;
+    return ((remainder = a % b) >= 0) ? remainder : remainder + b;
+}
+
 string VigenereCipher::convertString(string input, int shiftDirection)
 {
     if (!isValidInput(input))
@@ -37,8 +43,8 @@ string VigenereCipher::convertString(string input, int shiftDirection)
         int inputAscii = int(input[i]);
         // cout << "Input: " << input[i] << "(" << inputAscii << ")\n";
 
-        // If the char is one of the printable characters()
-        if (inputAscii == 10 || inputAscii == 13)
+        // If the char is not one of the printable characters(i.e. 32-126), skip it.
+        if (inputAscii < 32 || inputAscii == 127)
         {
             output += inputAscii;
             continue;
@@ -52,13 +58,8 @@ string VigenereCipher::convertString(string input, int shiftDirection)
         int modulus = numeric_limits<char>::max() - 32;
 
         // Apply Vigenère's cipher, but prevent unprintable characters
-        int outputAscii = (inputAscii - 32 + keyAscii) % modulus + 32;
-        // cout << ' ' << outputAscii << ' ';
-
-        // if (outputAscii < 0)
-        // {   
-        //     outputAscii = modulus + outputAscii;
-        // }
+        int outputAscii = VigenereCipher::nonNegativeMod(inputAscii - 32 + keyAscii, modulus) + 32;
+        // cout << "Output: " << char(outputAscii) << '(' << outputAscii << ")\n";
 
         output += char(outputAscii);
     }

@@ -34,90 +34,57 @@ int main(int argc, char *argv[])
     }
 
     string fileName = (string)argv[2];
-    filesystem::path plaintextFile("./plaintext/" + fileName);
-    filesystem::path ciphertextFile("./ciphertext" + fileName);
+    filesystem::path inputFile;
+    filesystem::path outputFile;
+
+    // Set the input and output files based on the operation
+    if (string(argv[1]) == "encrypt")
+    {
+        inputFile = "./plaintext/" + fileName;
+        outputFile = "./ciphertext/" + fileName;
+    }
+
+    else if (string(argv[1]) == "decrypt")
+    {
+        inputFile = "./ciphertext/" + fileName;
+        outputFile = "./plaintext/" + fileName;
+    }
+
+    // Raise an error if an invalid argument is passed in.
+    else
+    {
+        throw invalid_argument("The second argument must be either \"encrypt\" or \"decrypt\".");
+    }
 
     string plaintextFilePath = "./plaintext/" + fileName;
     string ciphertextFilePath = "./ciphertext/" + fileName;
 
-    string caesar;
-    for (int i = 65; i < 91; i++)
-    {
-        caesar += char(i);
-    }
-    cout << caesar << "\n\n";
-
-    string plaintext = "Hello world!";
-    string ciphertext;
-    int key = 20;
-
-    for (char letter : plaintext)
-    {
-        cout << int(letter + key) << ' ';
-        ciphertext += char(letter + key);
-    }
-    cout << '\n' << ciphertext << "\n\n";
-
-    string decrypted;
-    for (char letter : ciphertext)
-    {   
-        cout << int(letter - key) << ' ';
-        decrypted += (letter - key);
-    }
-    cout << '\n' + decrypted;
-
     // Create a cipher out of the key
-    // string key = readFile("./keys/" + fileName);
-    // VigenereCipher cipher("A");
-    // cout << "Key: " << int(key[0]) << "\n\n";
+    string key = readFile("./keys/" + fileName);
+    VigenereCipher cipher(key);
 
-    // for (int i=33; i<(numeric_limits<char>::max()); i++) {
-    //     string ciphertext = cipher.encrypt(string(1, char(i)));
+    string inputText = readFile(inputFile.string());
+    string outputText;
 
-    //     cout << char(i) << '(' << i << ')' << " -> ";
-    //     cout << cipher.encrypt(string(1, char(i))) << '(' << int(ciphertext[0]) << ')' << " -> ";
+    // Encrypt plaintext
+    if (string(argv[1]) == "encrypt")
+    {
+        outputText = cipher.encrypt(inputText);
+    }
 
-    //     string decrypted = cipher.decrypt(ciphertext);
-    //     cout << decrypted << '(' << int(decrypted[0]) << ')' << '\n';
-    // }
+    // Decrypt ciphertext
+    else
+    {
+        outputText = cipher.decrypt(inputText);
+    }
 
-    // if ((string)argv[1] == "encrypt")
-    // {
-    //     string plaintext = readFile(plaintextFilePath);
+    // Write the text to the corresponding output file
+    ofstream(outputFile.string()) << outputText;
 
-    //     // Encrypt plaintext, and write ciphertext into the file.
-    //     string ciphertext = cipher.encrypt(plaintext);
-    //     ofstream ciphertextFile("./ciphertext/" + fileName);
-    //     ciphertextFile << ciphertext;
-
-    //     // Print results
-    //     cout << "Successfully encrypted." << "\n\n";
-    //     cout << "Plaintext: " << plaintext << '\n';
-    //     cout << "Key: " << key << '\n';
-    //     cout << "Ciphertext: " << ciphertext << '\n';
-    //     // cout << cipher.decrypt(ciphertext) << '\n';
-    // }
-
-    // else if ((string)argv[1] == "decrypt")
-    // {
-    //     string ciphertext = readFile("./ciphertext/" + fileName);
-
-    //     // Decrypt ciphertext, and write plaintext into the file.
-    //     string plaintext = cipher.decrypt(ciphertext);
-    //     ofstream ciphertextFile("./plaintext/" + fileName);
-    //     ciphertextFile << plaintext;
-
-    //     // Print results
-    //     cout << "Successfully decrypted." << "\n\n";
-    //     cout << "Ciphertext: " << ciphertext << '\n';
-    //     cout << "Key: " << key << '\n';
-    //     cout << "Plaintext: " << plaintext << '\n';
-    // }
-
-    // else
-    // {
-    //     throw invalid_argument("The second argument must be either \"encrypt\" or \"decrypt\".");
-    // }
+    cout << "Successfully " << argv[1] << "ed\n\n";
+    cout << "Input from " << inputFile.string() << ":\n" << inputText << "\n\n";
+    cout << "Key:\n" << key << "\n\n";
+    cout << "Output to " << outputFile.string() << ":\n" << outputText;
 
     return EXIT_SUCCESS;
 }
