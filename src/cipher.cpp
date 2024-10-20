@@ -41,7 +41,6 @@ string VigenereCipher::convertString(string input, int shiftDirection)
     for (int i = 0; i < input.size(); i++)
     {
         int inputAscii = int(input[i]);
-        // cout << "Input: " << input[i] << "(" << inputAscii << ")\n";
 
         // If the char is not one of the printable characters(i.e. 32-126), skip it.
         if (inputAscii < 32 || inputAscii == 127)
@@ -52,14 +51,12 @@ string VigenereCipher::convertString(string input, int shiftDirection)
 
         // Apply the shiftDirection to the key
         int keyAscii = int(this->key[i]) * shiftDirection;
-        // cout << "Key: " << key[i] << "(" << keyAscii << ")\n";
 
         // The number of non-control ASCII characters
         int modulus = numeric_limits<char>::max() - 32;
 
         // Apply Vigenère's cipher, but prevent unprintable characters
         int outputAscii = VigenereCipher::nonNegativeMod(inputAscii - 32 + keyAscii, modulus) + 32;
-        // cout << "Output: " << char(outputAscii) << '(' << outputAscii << ")\n";
 
         output += char(outputAscii);
     }
