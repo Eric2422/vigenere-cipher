@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "cipher.h"
+#include "cipher.cpp"
 using namespace std;
 
 /**
